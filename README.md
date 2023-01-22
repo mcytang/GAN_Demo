@@ -39,6 +39,11 @@ For example, to test the example network provided, call
  The discriminator on the other hand as larger, using 11 linear 
  layers.
  
+ To avoid the common _vanishing gradient_ problem, we train using the 
+ least squares criterion proposed by Mao _et al_ in 2016 
+ (https://arxiv.org/abs/1611.04076). Moreover, we use specral normalisation
+ in the discriminator.
+ 
  
  
  ## To do
