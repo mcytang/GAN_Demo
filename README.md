@@ -28,8 +28,18 @@ For example, to test the example network provided, call
  
  ## About 
  
- Given that a probability distribution can be reasonably well 
- approximated by simply approximating a function, e.g. $e^{-x^2}$ for a Gaussian or normal distribution.
+ A probability distribution can be reasonably well 
+ approximated by simply approximating a function, e.g. $e^{-x^2}$ 
+ for a Gaussian or normal distribution, assuming we already have access
+ to a uniform random variable. We use uniformly sampled numbers as
+ seeds for our generative model. As such, our generator has an
+ unexpectedly lightweight architecture, consisting of only a small
+ number of linear (or fully connected) layers.
+ 
+ The discriminator on the other hand as larger, using 11 linear 
+ layers.
+ 
+ 
  
  ## To do
  
