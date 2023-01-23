@@ -32,12 +32,12 @@ For example, to test the example network provided, call
  approximated by simply approximating a function, e.g. $e^{-x^2}$ 
  for a Gaussian or normal distribution, assuming we already have access
  to a uniform random variable. We use uniformly sampled numbers as
- seeds for our generative model. As such, our generator has an
- unexpectedly lightweight architecture, consisting of only a small
- number of linear (or fully connected) layers.
+ seeds for our generative model. As such, our generator has a lightweight 
+ architecture, consisting of a small number of linear (or fully connected) layers.
  
- The discriminator on the other hand as larger, using 11 linear 
- layers.
+ The discriminator is similary simple, and the main difficulty is balancing
+ the width and depth of the generator and discriminator to achieve a 
+ meaningful training procedure.
  
  To avoid the common _vanishing gradient_ problem, we train using the 
  least squares criterion proposed by Mao _et al_ in 2016 
