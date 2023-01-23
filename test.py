@@ -1,14 +1,11 @@
-def main(Nbatch = 128, maxiter = int(1e4)):
+def main(name, Nbatch = 128, maxiter = int(1e4)):
     import os
     import torch 
     import torch.distributions as d 
     from matplotlib import pyplot as plt
     from utils.helpers import samples_to_dist
-    names = []
-    for dirname in os.scandir('TrainedModels'):
-        names.append(dirname.name)
 
-    path = 'TrainedModels/' + names[-1] 
+    path = 'TrainedModels/' + name
     G = torch.load(path + '/G.pt')
     D = torch.load(path + '/D.pt')
 
@@ -37,10 +34,12 @@ def main(Nbatch = 128, maxiter = int(1e4)):
     
     def update_generator( Gx, z):
         ax.cla()
+        ax.set_title('Testing GAN number generator')
         xs, ys = samples_to_dist(Gx, xlims)
-        ax.plot(xs, ys, color = 'orange')
+        ax.plot(xs, ys, label = 'GAN generated dist.', color = 'orange')
         xs, ys = samples_to_dist(z, xlims)
-        ax.bar(xs, ys)
+        ax.bar(xs, ys, label = 'True dist.')
+        ax.legend(loc = 'upper right')
         plt.pause(1e-1)
 
     for i in range(maxiter):
@@ -50,4 +49,5 @@ def main(Nbatch = 128, maxiter = int(1e4)):
         update_generator(Gx, z)
     
 if __name__ == '__main__':
-    main()
+    from sys import argv
+    main(argv[1])

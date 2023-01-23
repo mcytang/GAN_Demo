@@ -14,9 +14,9 @@ def save_model(G, D, P):
     os.mkdir(r'TrainedModels/{}'.format(tmp))
     torch.save(G, r'TrainedModels/{}/G.pt'.format(tmp))
     torch.save(D, r'TrainedModels/{}/D.pt'.format(tmp))
-    if P.save_fig:
+    if P.show_fig:
         plt.savefig(r'TrainedModels/{}/fig.png'.format(tmp))
-    with open(r'TrainedModels/{}/parameters.txt'.format(tmp)) as f:
+    with open(r'TrainedModels/{}/parameters.txt'.format(tmp), 'w') as f:
         s=''
         s+='seed: {}\n'.format(P.seed)
         s+='\n'
@@ -74,7 +74,7 @@ class plot_helper():
         self.ax.set_xlim(self.xlims)
         self.ax.set_ylim([0, 1.1])
         self.legend_exists = False
-        plt.pause(1e-3)
+        plt.pause(1e-1)
 
     def update_generator(self, Gx, z):
         self.ax.cla()
@@ -82,7 +82,7 @@ class plot_helper():
         self.ax.plot(xs, ys, color = 'orange')
         xs, ys = samples_to_dist(z, self.xlims)
         self.ax.bar(xs, ys)
-        plt.pause(1e-3)
+        plt.pause(1e-1)
 
     def update_loss(self, X):
         self.ax1.plot(X.G_losses, label = 'G',color = self.colours[0], linewidth = 0.5)
@@ -92,5 +92,5 @@ class plot_helper():
         if not self.legend_exists: 
             self.ax1.legend()
             self.legend_exists = True
-        plt.pause(1e-3)
+        plt.pause(1e-1)
 

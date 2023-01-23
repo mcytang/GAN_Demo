@@ -22,4 +22,4 @@ train = GANtrain(
 
 G, D = train(G, D)
 
-save_model(G, D, P.show_fig)
+save_model(G, D, P)
