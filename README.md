@@ -19,7 +19,7 @@ A generator and discriminator will be saved to /TrainedModels. These models can 
     
 For example, to test the example network provided, call
 
-    python test.py "22_01_2023-21_12"
+    python test.py "22_01_2023-22_09"
     
  This will create a pyplot figure to compare the generated distribution (orange line) 
  to the target distribution (indicated by blue bars).
