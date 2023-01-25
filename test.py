@@ -49,7 +49,7 @@ def main(name, checkpoint = None, Nbatch = 128, maxiter = int(1e4)):
 
     for i in range(maxiter):
         z = distribution.rsample()
-        Gx = G(torch.rand((Nbatch, 1, G.Nsample))*2 - 1)
+        Gx = G(torch.rand((Nbatch, G.Nsample))*2 - 1)
 
         update_generator(Gx, z)
     

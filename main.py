@@ -10,8 +10,8 @@ import Hyperparameters as P
 
 manual_seed(P.seed)
 
-G = M.Generator(P.target_distribution, P.mu, P.std, P.Nsample, P.depth, P.width)
-D = M.Discriminator(P.Nsample, P.D_inChannels, P.D_depth, loss = P.loss)
+G = M.Generator(P.target_distribution, P.mu, P.std, P.Nsample, P.depth, P.inChannels)
+D = M.Discriminator(P.Nsample, P.D_inChannels, P.D_depth)
 
 loss_func = h.get_loss(P.loss)
 

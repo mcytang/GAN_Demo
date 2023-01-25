@@ -1,11 +1,9 @@
-import torch
 from torch import nn
-from torch.nn.utils import spectral_norm
 
 class Generator(nn.Module):
-    def __init__(self, target_distribution, mu, std, Nsample = 32, depth = 4, width = 64):
+    def __init__(self, target_distribution, mu, std, Nsample = 32, depth = 4, inChannels = 64):
         """
-        input x = [Nbatch, Nseed, Nsample]
+        input x = [Nbatch, Nsample]
         where: 
             Nbatch is the batch size
             Nseed is the size of the random seed (ie channels)
@@ -20,12 +18,14 @@ class Generator(nn.Module):
         self.depth = depth
         self.activation = nn.ReLU()
 
-        self.width = width
+        self.inChannels = inChannels
 
-        setattr(self, 'linear0', nn.Linear(self.Nsample, self.width))
+        setattr(self, 'linear0', nn.Linear(self.Nsample, self.inChannels))
+        setattr(self, 'norm0', nn.BatchNorm1d(self.inChannels))
         for i in range(1,self.depth-1):
-            setattr(self, 'linear{}'.format(i), nn.Linear(self.width,self.width))
-        setattr(self, 'linear{}'.format(self.depth-1), nn.Linear(self.width, self.Nsample))
+            setattr(self, 'linear{}'.format(i), nn.Linear(self.inChannels,self.inChannels))
+            setattr(self, 'norm{}'.format(i), nn.BatchNorm1d(self.inChannels))
+        setattr(self, 'linear{}'.format(self.depth-1), nn.Linear(self.inChannels, self.Nsample))
         # initialise weights
         for i in range(self.depth):
             layer = getattr(
@@ -36,18 +36,18 @@ class Generator(nn.Module):
             nn.init.constant_(layer.bias, 0.)
 
     def forward(self, x): 
-        for i in range(self.depth):
+        for i in range(self.depth-1):
             x = getattr(self, 'linear{}'.format(i))(x)
-            if i < self.depth - 1: 
-                x = self.activation(x)
+            x = self.activation(x)
+            x = getattr(self, 'norm{}'.format(i))(x)
+        x = getattr(self, 'linear{}'.format(self.depth-1))(x)
         return x
 
 
-
 class Discriminator(nn.Module): 
-    def __init__(self, Nsample, inChannels = 16, depth = 4, niter = 1, loss = 'LSGAN'):
+    def __init__(self, Nsample, inChannels = 16, depth = 2):
         """
-        input x = [Nbatch, 1, Nsample]
+        input x = [Nbatch, Nsample]
         where: 
             Nbatch is the batch size
             Nseed is the size of the random seed
@@ -66,14 +66,6 @@ class Discriminator(nn.Module):
                 'fc{}'.format(i),
                 nn.Linear(self.inChannels // 2 ** (i-1), self.inChannels // 2 ** i)
             )
-        # self.fc0 = spectral_norm(nn.Linear(self.Nsample, self.inChannels), n_power_iterations=niter)
-        # for i in range(1, self.depth):
-        #     setattr(
-        #         self,
-        #         'fc{}'.format(i),
-        #         spectral_norm(nn.Linear(self.inChannels // 2 ** (i-1), self.inChannels // 2 ** i),
-        #          n_power_iterations=niter)
-        #     )
 
     def forward(self, y): 
         for i in range(self.depth-1):

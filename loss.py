@@ -7,12 +7,12 @@ class l2(nn.Module):
         self.r = 0.9
         self.real = self.r
         self.fake = -self.r
-        self.counterfeit = self.real
+        self.counterfeit = self.r
 
         self.loss = nn.MSELoss()
 
     def forward(self, y, label):
-        return self.loss(y, label) / (self.r ** 2)
+        return self.loss(y, label) / (2*(self.r ** 2))
 
 class GAN_loss(nn.Module):
     def __init__(self):
