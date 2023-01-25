@@ -1,19 +1,24 @@
-def main(name, Nbatch = 128, maxiter = int(1e4)):
-    import os
+def main(name, checkpoint = None, Nbatch = 128, maxiter = int(1e4)):
     import torch 
     import torch.distributions as d 
     from matplotlib import pyplot as plt
     from utils.helpers import samples_to_dist
 
     path = 'TrainedModels/' + name
-    G = torch.load(path + '/G.pt')
-    D = torch.load(path + '/D.pt')
+
+    if checkpoint is None: 
+        tmp = ''
+    else: 
+        tmp = '_{}'.format(checkpoint)
+
+    G = torch.load(path + '/G{}.pt'.format(tmp))
+    D = torch.load(path + '/D{}.pt'.format(tmp))
 
     atts = ['inChannels', 'depth']
-    print('G')
+    print('G args:')
     for att in atts:
         print(att, getattr(G, att))
-    print('D')
+    print('D args:')
     for att in atts: 
         print(att, getattr(D, att))
 
@@ -44,10 +49,14 @@ def main(name, Nbatch = 128, maxiter = int(1e4)):
 
     for i in range(maxiter):
         z = distribution.rsample()
-        Gx = G(torch.rand((Nbatch, 1, G.Nsample)))
+        Gx = G(torch.rand((Nbatch, 1, G.Nsample))*2 - 1)
 
         update_generator(Gx, z)
     
 if __name__ == '__main__':
     from sys import argv
-    main(argv[1])
+    if len(argv) < 3:
+        checkpoint = None
+    else: 
+        checkpoint = argv[2]
+    main(argv[1], checkpoint)

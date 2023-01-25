@@ -48,5 +48,4 @@ For example, to test the example network provided, call
  
  ## To do
  
- - Test for effective parameters with conventional GAN loss
  - Add GPU functionality
