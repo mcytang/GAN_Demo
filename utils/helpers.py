@@ -44,7 +44,7 @@ def save_parameters(name, P):
         s+='std: {}\n'.format(P.std)
         s+='Nsample: {}\n'.format(P.Nsample)
         s+='Nseed: {}\n'.format(P.Nseed)
-        s+='width: {}\n'.format(P.width)
+        s+='inChannels: {}\n'.format(P.inChannels)
         s+='depth: {}\n'.format(P.depth)
         s+='\n'
         s+='D_inChannels: {}\n'.format(P.D_inChannels)
@@ -57,7 +57,7 @@ def save_parameters(name, P):
         s+='batchSize: {}\n'.format(P.batchSize)
         s+='drop_rate: {}\n'.format(P.drop_rate)
         s+='drop_ratio: {}\n'.format(P.drop_ratio)
-        s+='fig_freq: {}\n'.format(P.fig_freq)
+        s+='fig_freq: {}\n'.format(P.fig_freq)  
         s+='\n'
         s+='show_fig: {}\n'.format(P.show_fig)
         f.write(s)

@@ -42,7 +42,7 @@ class GANtrain():
         G.train()
         D.train()
         
-        G_optimiser = torch.optim.SGD(G.parameters(), lr = self.G_lr)#, momentum = 0.1)
+        G_optimiser = torch.optim.SGD(G.parameters(), lr = self.G_lr, momentum = 0.01)
         G_scheduler = torch.optim.lr_scheduler.StepLR(G_optimiser, step_size=self.drop_rate, gamma=self.drop_ratio)
 
         D_optimiser = torch.optim.SGD(D.parameters(), lr = self.D_lr)
@@ -75,10 +75,8 @@ class GANtrain():
             Dz = D(z)
 
             # compute loss
-            w0 = (torch.rand_like(DGx)-0.5) * 1e-2
-            w1 = (torch.rand_like(Dz)-0.5) * 1e-2
-            fake = torch.ones_like(DGx) * loss_func.fake + w0
-            real = torch.ones_like(Dz) * loss_func.real + w1
+            fake = torch.ones_like(DGx) * loss_func.fake
+            real = torch.ones_like(Dz) * loss_func.real
             fake_loss = loss_func(DGx, fake) 
             real_loss = loss_func(Dz, real)
             D_loss = (real_loss + fake_loss ) / 2
