@@ -97,7 +97,7 @@ class plot_helper():
         xs, ys = samples_to_dist(Gx, self.xlims)
         self.ax.plot(xs, ys, color = 'orange')
         xs, ys = samples_to_dist(z, self.xlims)
-        self.ax.bar(xs, ys)
+        self.ax.plot(xs, ys, color = 'blue')
         plt.pause(1e-1)
 
     def update_loss(self, X):

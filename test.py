@@ -42,7 +42,7 @@ def main(name, checkpoint = None, Nbatch = 128, maxiter = int(1e4)):
         xs, ys = samples_to_dist(Gx, xlims, False)
         ax.plot(xs, ys, label = 'GAN generated dist.', color = 'orange')
         xs, ys = samples_to_dist(z, xlims, False)
-        ax.bar(xs, ys, label = 'True dist.')
+        ax.plot(xs, ys, label = 'True dist.')
         ax.legend(loc = 'upper right')
         ylim = max(ylim, max(ys))
         ax.set_ylim([0, ylim])
