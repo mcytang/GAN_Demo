@@ -35,23 +35,26 @@ def main(name, checkpoint = None, Nbatch = 128, maxiter = int(1e4)):
         xlims = [-3.5,3.5]
 
     ax.set_xlim(xlims)
-    ax.set_ylim([0, 1.1])
     
-    def update_generator( Gx, z):
+    def update_generator(Gx, z, ylim):
         ax.cla()
         ax.set_title('Testing GAN number generator')
-        xs, ys = samples_to_dist(Gx, xlims)
+        xs, ys = samples_to_dist(Gx, xlims, False)
         ax.plot(xs, ys, label = 'GAN generated dist.', color = 'orange')
-        xs, ys = samples_to_dist(z, xlims)
+        xs, ys = samples_to_dist(z, xlims, False)
         ax.bar(xs, ys, label = 'True dist.')
         ax.legend(loc = 'upper right')
+        ylim = max(ylim, max(ys))
+        ax.set_ylim([0, ylim])
         plt.pause(1e-1)
+        return ylim
 
+    ylim = 0
     for i in range(maxiter):
         z = distribution.rsample()
         Gx = G(torch.rand((Nbatch, G.Nsample))*2 - 1)
 
-        update_generator(Gx, z)
+        ylim = update_generator(Gx, z, ylim)
     
 if __name__ == '__main__':
     from sys import argv

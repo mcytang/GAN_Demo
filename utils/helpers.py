@@ -43,7 +43,6 @@ def save_parameters(name, P):
         s+='mu: {}\n'.format(P.mu)
         s+='std: {}\n'.format(P.std)
         s+='Nsample: {}\n'.format(P.Nsample)
-        s+='Nseed: {}\n'.format(P.Nseed)
         s+='inChannels: {}\n'.format(P.inChannels)
         s+='depth: {}\n'.format(P.depth)
         s+='\n'
@@ -62,8 +61,8 @@ def save_parameters(name, P):
         s+='show_fig: {}\n'.format(P.show_fig)
         f.write(s)
 
-def samples_to_dist(samples, xlims):
-    inc = 0.1
+def samples_to_dist(samples, xlims, normalize = True):
+    inc = 0.05
     xs = np.arange(xlims[0], xlims[1], inc)
     ys = []
     samples= samples.detach().cpu()
@@ -71,8 +70,9 @@ def samples_to_dist(samples, xlims):
         idx = (samples >= x- inc/2) * (samples < x + inc/2)
         ys.append(idx.sum().cpu().numpy()/ samples.numel())
 
-    if max(ys) > 0:
-        ys = ys / max(ys)
+    if normalize:
+        if max(ys) > 0:
+            ys = ys / max(ys)
     return xs, ys
 
 
@@ -85,7 +85,7 @@ class plot_helper():
         if target_distribution == 'Exponential':
             self.xlims = [0, 10]
         elif target_distribution == 'Gaussian':
-            self.xlims = [-4,4]
+            self.xlims = [-5, 5]
 
         self.ax = ax[0]
         self.ax.set_xlim(self.xlims)
