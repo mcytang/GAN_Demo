@@ -1,22 +1,22 @@
-seed: 2
+seed: 4
 
 target_distribution: Gaussian
-mu: 0
+mu: 2
 std: 1
-Nsample: 64
-inChannels: 64
-depth: 3
+Nsample: 32
+inChannels: 32
+depth: 2
 
-D_inChannels: 32
-D_depth: 6
+D_inChannels: 16
+D_depth: 4
 
 loss: LSGAN
 G_lr: 0.01
-D_lr: 0.011
+D_lr: 0.01
 Nepochs: 30000
-batchSize: 8
+batchSize: 4
 drop_rate: 20000
-drop_ratio: 0.1
+drop_ratio: 0.2
 fig_freq: 10000.0
 
 show_fig: True

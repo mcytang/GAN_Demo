@@ -64,14 +64,14 @@ class GANtrain():
             ###################
 
             # get seed 
-            x = torch.rand(dim)*2 - 1
+            x = torch.randn(dim)
 
             # generate
             Gx = G(x)
 
             # discriminate
             z = distribution.rsample()
-            DGx = D(Gx)
+            DGx = D(Gx.detach())
             Dz = D(z)
 
             # compute loss
@@ -96,8 +96,7 @@ class GANtrain():
 
             G_optimiser.zero_grad()
 
-            x = torch.rand(dim)
-            DGx = D(G(x))# discriminate
+            DGx = D(Gx)# discriminate
             G_loss = loss_func(DGx, torch.ones_like(DGx) * loss_func.counterfeit)# compute loss
 
             G_loss.backward() #compute gradients

@@ -4,9 +4,9 @@ from matplotlib import pyplot as plt
 import loss as l
 
 def get_loss(name):
-    if name == 'GAN':
+    if name == l.loss.GAN:
         return l.GAN_loss()
-    elif name == 'LSGAN': 
+    elif name == l.loss.LSGAN: 
         return l.l2()
 
 def myprint(X):
